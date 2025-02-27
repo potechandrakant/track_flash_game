@@ -8,7 +8,7 @@ app.set("views", path.join(__dirname, "/views"));
 
 app.get("/login", (req,res) => {
     res.send("Success");
-})
+});
 
 
 app.listen("8080", ()=> {
