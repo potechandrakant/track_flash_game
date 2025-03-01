@@ -22,17 +22,30 @@ app.get("/", (req,res)=>{
 
 app.post("/register",(req,res)=>{
     let {userName , userEmail , userPassword} = req.body;
-    console.log(userName);
 
     let q="INSERT INTO user (username,email,userpass) VALUES (?,?,?)"
     try {
         connection.query(q,[userName,userEmail,userPassword], (err, result) => {
-            if (err) throw err;
-            console.log(result);
+            if (err) {
+                if(err.code === 'ER_DUP_ENTRY'){
+                    const duplicateField = err.sqlMessage.match(/key '(.*)'/)[1];
+                    if(duplicateField === 'user.username'){
+                        res.send("<script>alert('Username already exist'); window.location.href = '/';</script>");
+                        return;
+                    }
+                    else if(duplicateField === 'user.email'){
+                        res.send("<script>alert('Email already exist'); window.location.href = '/';</script>");
+                        return;
+                    }
+                }else{
+                    res.send("<script>alert('Internal Server Error'); window.location.href = '/';</script>");
+                    return;
+                }
+            }
+
             res.redirect("/")
         });
     } catch (err) {
-        console.log(err);
         res.send("some error in DB")
     }
 })
@@ -45,17 +58,14 @@ app.post("/login", (req, res) => {
 
     connection.query(q, (err, result) => {
         if (err) {
-            console.error(err);
             res.send("<script>alert('Internal Server Error'); window.location.href = '/';</script>");
             return;
         }
 
         if (result.length > 0 && loginName === result[0].username && loginPassword === result[0].userpass) {
             res.send("<script>alert('Login successful!'); window.location.href = '/';</script>");
-            console.log(result[0].username);
         } else {
             res.send("<script>alert('Login failed: Incorrect username and password or no user found.'); window.location.href = '/';</script>");
-            console.log("Login failed: Incorrect username and password or no user found.");
         }
     });
 });
