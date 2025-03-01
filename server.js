@@ -17,7 +17,7 @@ const connection = mysql.createConnection({
 });
 
 app.get("/", (req,res)=>{
-    res.render("home.ejs");   
+    res.render("index.ejs");   
 })
 
 app.post("/register",(req,res)=>{
