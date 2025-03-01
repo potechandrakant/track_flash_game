@@ -63,14 +63,16 @@ app.post("/login", (req, res) => {
         }
 
         if (result.length > 0 && loginName === result[0].username && loginPassword === result[0].userpass) {
-            res.send("<script>alert('Login successful!'); window.location.href = '/';</script>");
+            res.redirect("/game");
         } else {
             res.send("<script>alert('Login failed: Incorrect username and password or no user found.'); window.location.href = '/';</script>");
         }
     });
 });
 
-
+app.get("/game", (req, res) => {
+    res.render("game.ejs");
+})
 
 app.listen("8080", ()=> {
     console.log("App is working");
