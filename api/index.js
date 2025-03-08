@@ -72,4 +72,3 @@ app.get("/game", (req, res) => {
 });
 
 // REMOVE `app.listen(8080)` for Vercel
-module.exports = app;
