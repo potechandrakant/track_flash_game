@@ -10,10 +10,11 @@ app.set("views", path.join(__dirname, "/views"));
 
 // Use a REMOTE MySQL connection instead of "localhost"
 const connection = mysql.createConnection({
-    host: "your-remote-host.com", 
-    user: "your-db-user",
+    host: "sql12.freesqldatabase.com", 
+    user: "sql12766641",
     database: "game",
-    password: "your-db-password"
+    port: 3306,
+    password: "WN4aKHaInp"
 });
 
 app.get("/", (req, res) => {
